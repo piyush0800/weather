@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="IMG/utensils-solid-white.png" type="image/icon type">
+    <title>Weather</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!--Font Awesome  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Navbar~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow py-3 sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="font-style: italic; font-weight: bold;"><i
+                    class="fa-solid fa-cloud-sun"></i> Weather</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#menu">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#reviews">Reviews</a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#reservation">Reservation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#blog">Blog</a>
+                    </li> -->
+                </ul>
+                <a href="#" class="btn btn-primary">Email Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Card~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div class="container card">
+        <div class="search">
+            <input type="text" placeholder="Enter City Name" spellcheck="false">
+            <button><i class="fa-solid fa-magnifying-glass search-icon"></i></button>
+        </div>
+        <div class="error">
+            <p>Invalid City Name</p>
+        </div>
+        <div class="weather">
+            <i class="fa-solid fa-cloud-sun weather-icon"></i>
+            <h4 class="main2">icon</h4>
+            <h3 class="main1">weather</h3>
+            <h1 class="temp">°C</h1>
+            <h2 class="city">City</h2>
+            <div class="details">
+                <div class="col">
+                    <i class="fa-solid fa-water"></i>
+                    <div>
+                        <p class="humidity"></p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <i class="fa-solid fa-wind"></i>
+                    <div>
+                        <p class="wind"></p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br><br>
+
+    <script>
+        const apiKey = "f32ac4f0ee00401bd0ee80cff6c577d3";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkWeather(city) {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+
+            if (response.status == 404) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".weather").style.display = "none";
+            } else {
+                var data = await response.json();
+
+                console.log(data);
+
+                document.querySelector(".city").innerHTML = data.name;
+                document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+                document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+                document.querySelector(".wind").innerHTML = data.wind.speed + "Km/h";
+                document.querySelector(".main1").innerHTML = data.weather[0].main;
+
+                document.querySelector(".main2").innerHTML = data.weather[0].icon;
+
+                // if(data.weather[0].main == "Clouds"){
+                //     weatherIcon.src = <i class="fa-solid fa-cloud weather-icon"></i>;
+                // }else if(data.weather[0].main == "Rain"){
+                //     weatherIcon.src = <i class="fa-solid fa-cloud-rain weather-icon"></i>;
+                // }else if(data.weather[0].main == "Clear"){
+                //     weatherIcon.src = <i class="fa-solid fa-sun weather-icon"></i>;
+                // }else if(data.weather[0].main == "Drizzle"){
+                //     weatherIcon.src = <i class="fa-solid fa-cloud-showers-water weather-icon"></i>;
+                // }else if(data.weather[0].main == "Mist"){
+                //     weatherIcon.src = <i class="fa-solid fa-smog weather-icon"></i>;
+                // }else if(data.weather[0].main == "Snow"){
+                //     weatherIcon.src = <i class="fa-regular fa-snowflake weather-icon"></i>;
+                // }else if(data.weather[0].main == "Haze"){
+                //     weatherIcon.src = <i class="fa-solid fa-cloud-bolt weather-icon"></i>;
+                // }
+
+                document.querySelector(".weather").style.display = "block"
+                document.querySelector(".error").style.display = "none";
+            }
+
+        }
+
+        searchBtn.addEventListener("click", () => {
+            checkWeather(searchBox.value);
+        })
+
+    </script>
+
+</body>
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+</html>
